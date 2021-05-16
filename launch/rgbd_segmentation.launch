@@ -1,0 +1,33 @@
+<launch>
+  <arg name="sensor_name" default="cofusion_car" />
+  <arg name="scene_name" default="cofusion_car" />
+  <arg name="visualize" default="true" />
+
+  <node pkg="rgbd_segmentation" type="rgbd_segmentation_node" name="rgbd_segmentation_node" output="log">
+    <rosparam command="load" file="$(find rgbd_segmentation)/config/default.yaml" />
+    <rosparam command="load" file="$(find rgbd_segmentation)/config/$(arg sensor_name).yaml" />
+  </node>
+
+
+  <node name="mask_rcnn" pkg="mask_rcnn_ros" type="mask_rcnn_node.py" output="log">
+    <param name="~input" value="/rgbd_segmentation_node/rgb/image_raw" />
+    <param name="~visualization" value="$(arg visualize)" />
+  </node>
+
+  <node pkg="nodelet" type="nodelet" args="manager" name="nodelet_manager" output="screen"/>
+
+  <node pkg="nodelet" type="nodelet" name="points_xyzrgb" args="load depth_image_proc/point_cloud_xyzrgb nodelet_manager --no-bond">
+    <remap from="rgb/camera_info"             to="/rgbd_segmentation_node/rgb/camera_info" />
+    <remap from="rgb/image_rect_color"        to="/rgbd_segmentation_node/rgb/image_raw" />
+    <remap from="depth_registered/image_rect" to="/rgbd_segmentation_node/depth/image_raw" />
+    <remap from="depth_registered/points"     to="/camera/depth_registered/points" />
+  </node>
+
+  <node pkg="cloud_segmentation" type="cloud_segmentation_node" name="cloud_segmentation_node" output="log">
+    <rosparam command="load" file="$(find cloud_segmentation)/config/default.yaml" />
+    <rosparam command="load" file="$(find cloud_segmentation)/config/$(arg scene_name).yaml" />
+    <rosparam command="load" file="$(find rgbd_segmentation)/config/$(arg sensor_name).yaml" />
+    <param name="viewer/enable" value="$(arg visualize)" />
+  </node>
+
+</launch>

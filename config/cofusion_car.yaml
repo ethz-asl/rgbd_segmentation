@@ -1,0 +1,4 @@
+rgb_image_sub_topic: /camera/rgb/image_raw
+depth_image_sub_topic: /camera/depth/image_raw
+
+camera_intrinsics: [564.3, 0, 480, 0, 564.3, 270, 0, 0, 1]
