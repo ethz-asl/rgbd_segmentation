@@ -1,6 +1,6 @@
 # ROS package for RGB-D segmentation
 
-This package implements geometric-semantic segmentation of input RGB-D sequences. Incoming RGB frames are processed with [Mask R-CNN](https://github.com/ethz-asl/mask_rcnn_ros) to detect and recognize object instances and predict for each a segmentation mask. Corresponding depth frames are processed with a [geometric segmentation approach](https://github.com/ethz-asl/cloud_segmentation) which clusters 3D points via a region-growing strategy. The two segmentation results are combined by matching the extracted clusters to the predicted segmentation masks via a 2D overlap measure.
+This package implements geometric-semantic segmentation of input RGB-D sequences. Incoming RGB frames are processed with [Mask R-CNN](https://github.com/ethz-asl/mask_rcnn_ros) to detect and recognize object instances and predict for each a segmentation mask. Corresponding depth frames are processed with a [geometric segmentation approach](https://github.com/ethz-asl/cloud_segmentation) which clusters 3D points via a region growing strategy. The two segmentation results are combined by matching the extracted clusters to the predicted segmentation masks via a 2D overlap measure.
 
 The code has been developed as part of the [**TSDF++** framework](https://github.com/ethz-asl/tsdf-plusplus) for multiple dynamic object tracking and reconstruction. 
 
@@ -23,13 +23,15 @@ Margarita Grinvald, Federico Tombari, Roland Siegwart, and Juan Nieto, **TSDF++:
 
 The installation has been tested on Ubuntu 16.04 and Ubutnu 20.04.
 
-### Prerequisites
+### Requirements
+- ROS 
+- C++14 for [PCL 1.10](https://github.com/PointCloudLibrary/pcl)
+
+### Install dependencies
 Install ROS following the instructions at the [ROS installation page](http://wiki.ros.org/ROS/Installation). The full install (`ros-kinetic-desktop-full`, `ros-melodic-desktop-full`) are recommended. 
 
 Make sure to source your ROS _setup.bash_ script by following the instructions on the ROS installation page.
 
-### Requirements
-- C++14 for [PCL 1.10](https://github.com/PointCloudLibrary/pcl)
 
 ### Installation on Ubuntu
 In your terminal, define the installed ROS version and name of the catkin workspace to use:
@@ -63,7 +65,7 @@ wstool merge -t . rgbd_segmentation/rgbd_segmentation_ssh.rosinstall
 wstool update
 ```
 
-Build and source the TSDF++ packages:
+Build and source the fetched packages:
 ```bash
 catkin build
 source ../devel/setup.bash # (bash shell: ../devel/setup.bash,  zsh shell: ../devel/setup.zsh)
